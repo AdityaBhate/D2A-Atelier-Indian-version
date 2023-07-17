@@ -3,8 +3,31 @@ import "../node_modules/bootstrap/dist/css/bootstrap.css";
 import Layout from "../Components/Layout";
 import { StoreProvider } from "../store";
 import Head from "next/head";
+import { useRouter } from 'next/router';
+import { useEffect } from "react";
 
 function MyApp({ Component, pageProps }) {
+
+    const router = useRouter();
+    useEffect(() => {
+        const fetchCountry = async () => {
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                console.log(data.country_name)
+                if (data.country_name === 'India') {
+                    router.push('https://d2aatelier.com/');
+                } else {
+                    router.push('https://d2aatelier.in/');
+                }
+            } catch (error) {
+                console.error('Error fetching country:', error);
+            }
+        };
+
+        fetchCountry();
+    }, []);
+    console.log("Hello")
     return (
         <>
             <Head>
